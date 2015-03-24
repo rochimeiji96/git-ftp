@@ -1,0 +1,25 @@
+.content_file{ height:400px; overflow: auto; border: 1px solid #ccc; box-shadow: inset 0 1px 1px rgba(0,0,0,.075);}
+
+/* ----------------------------------------------------------------
+   Spinner Loader
+-----------------------------------------------------------------*/
+
+.spinner { width: 50px; text-align: center; position: relative; margin:auto; }
+.spinner > div { width: 12px; height: 12px; background-color: #fff;  border-radius: 100%; display: inline-block; -webkit-animation: bouncedelay 0.7s infinite ease-in-out; animation: bouncedelay 0.7s infinite ease-in-out; -webkit-animation-fill-mode: both; animation-fill-mode: both; }
+.spinner.light > div { background-color: #000; }
+.spinner .bounce1 { -webkit-animation-delay: -0.32s; animation-delay: -0.32s; }
+.spinner .bounce2 { -webkit-animation-delay: -0.16s; animation-delay: -0.16s; }
+@-webkit-keyframes bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0.0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes bouncedelay {
+  0%, 80%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 40% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
