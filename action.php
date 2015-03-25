@@ -1,9 +1,17 @@
 <?php
 ini_set('max_execution_time', 0);
+require "conf.php";
 require "includes/functions.php";
 require "includes/gitFtp.php";
 require "includes/dbar_class.inc.php";
 $db = new DBAR;
+
+// Update GIT-FTP
+if(isset($_GET['update'])){
+	exec("git pull", $o);
+	echo "Update GIT-FTP Succesfull";
+	die;
+}
 
 // Save Project
 if(isset($_POST['action']) && $_POST['action'] == "save_project"){
@@ -47,7 +55,7 @@ if(isset($_POST['action']) && $_POST['action'] == "ftp_check"){
 
 // Graph Commit Data
 if(isset($_POST['action']) && $_POST['action'] == "list_commit"){
-	$gp = gitFtp::dir($_POST['project']);
+	$gp = gitFtp::dir($_POST['project'], $conf);
 	// If no git
 	if(!$gp){
 		echo "error";die;
@@ -60,21 +68,11 @@ if(isset($_POST['action']) && $_POST['action'] == "list_commit"){
 		$select .= '<option value="'.$commit['shortcode'].'">'.$commit['shortcode'].' ('.substr($commit['desc'],0,20).')</option>';
 	}
 	echo $select;die;
-
-	$gp = gitFtp::dir("ut-develop");
-
-	$o = $gp->file_committo('db17f0', '96b9d3');
-	// $gp->ftp_push($o);die;
-	print_r($o);die;
-	if($gp){
-		$res = $gp->list_commit('shortcode');
-		print_r($res);
-	}
 }
 
 // Checkout Files
 if(isset($_POST['action']) && $_POST['action'] == "checkout"){
-	$gp = gitFtp::dir($_POST['project']);
+	$gp = gitFtp::dir($_POST['project'], $conf);
 	$o = $gp->file_committo($_POST['commit_from'], $_POST['commit_to']);
 	if(empty($o)){
 		$o = $gp->file_unstage('key');
@@ -84,9 +82,9 @@ if(isset($_POST['action']) && $_POST['action'] == "checkout"){
 
 // Git upload to FTP
 if(isset($_POST['action']) && $_POST['action'] == "ftp_push"){
-	$gp = gitFtp::dir($_POST['project']);
+	$gp = gitFtp::dir($_POST['project'], $conf);
 	$gp = $gp->ftp_connect($_POST['ftp_server'],$_POST['ftp_user'],$_POST['ftp_pass'],$_POST['ftp_dir']);
-	$gp = $gp->socket_connect('http://zonareplika.com:2000/pub','gitFtp');
+	$gp = $gp->socket_connect($conf['websocket'],'gitFtp');
 	
 	$o = $gp->file_committo($_POST['commit_from'], $_POST['commit_to']);
 	if(empty($o)){

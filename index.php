@@ -1,4 +1,5 @@
 <?php
+require "conf.php";
 require "includes/dbar_class.inc.php";
 $db = new DBAR;
 $data = $db->get("project")->result_array();
@@ -18,13 +19,19 @@ $new_id = $new['pj_id'] + 1;
 	<script type="text/javascript" src="assets/js/socket.io.js"></script>
 	<script type="text/javascript" src="assets/js/jquery.js"></script>
 	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+	var $conf = <?php echo json_encode($conf);?>;
+	</script>
 	<script type="text/javascript" src="assets/js/main.js"></script>
 </head>
 <body>
 <div class="container" style="padding-top:50px;">
 	<div class="row">
-		<div class="col-xs-12">
+		<div class="col-xs-10">
 			<a href="project.php?id=<?php echo $new_id;?>" class="btn btn-success">Add New</a>
+		</div>
+		<div class="col-xs-2">
+			<a href="javascript:;" id="update_git_ftp" class="btn btn-info btn-block">Update GIT-FTP</a>
 		</div>
 	</div>
 	<div class="row">

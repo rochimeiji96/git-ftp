@@ -1,4 +1,5 @@
 <?php
+require "conf.php";
 require "includes/functions.php";
 require "includes/dbar_class.inc.php";
 $db = new DBAR;
@@ -20,6 +21,9 @@ $row = $db->where(["pj_id" => $id])->limit(1)->get("project")->row_array();
 	<script type="text/javascript" src="assets/js/socket.io.js"></script>
 	<script type="text/javascript" src="assets/js/jquery.js"></script>
 	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+	var $conf = <?php echo json_encode($conf);?>;
+	</script>
 	<script type="text/javascript" src="assets/js/main.js"></script>
 </head>
 <body>

@@ -1,18 +1,20 @@
 <?php
 class gitFtp{
+	var $conf = [];
 	var $dir = "";
 	var $ftp_conn = "";
 	var $ftp_dir = "";
 	var $io_server = "";
 
-	function __construct($dir = ""){
+	function __construct($dir = "", $conf){
 		$this->dir = "../$dir/";
+		$this->conf = $conf;
 	}
 
-	static function dir($dir){
+	static function dir($dir, $conf){
 		exec("cd ../$dir/ && git status", $o);
 		if(empty($o)) return false;
-		return new gitFtp($dir);
+		return new gitFtp($dir, $conf);
 	}
 
 	static function nms($str){
@@ -175,14 +177,7 @@ class gitFtp{
 		return $this;
 	}
 
-	function ftp_is_dir($dir) {
-		if(ftp_size($this->ftp_conn,$dir) == '-1'){
-	        return true; // Is directory
-	    }else{
-	        return false; // Is file
-	    }
-	}
-
+	// Upload file with git repository
 	function ftp_push($commit){
 		$count = count($commit);
 		$complete = 0;

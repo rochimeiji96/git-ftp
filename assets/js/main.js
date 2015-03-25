@@ -1,6 +1,6 @@
 $(function(){
 	// Socket IO
-	var app = io.connect('http://zonareplika.com:2000/pub');
+	var app = io.connect($conf['websocket']);
 	function app_on(channel, event, callback){
 		app.on(channel, function (data){
 	    	if(data['event'] == event){
@@ -20,6 +20,26 @@ $(function(){
 		$(".result_content").html(html);
 	});
 
+	// Update git-ftp
+	$("#update_git_ftp").click(function(e){
+		e.preventDefault();
+		if(typeof nds != "undefined") return false;
+		nds = true;
+
+		$btn = $(this);
+		$(this).html('<div class="spinner light"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>');
+
+		$.ajax({
+			url : 'action.php?update=true',
+			success : function(a){
+				delete nds;
+				$btn.html("Update GIT-FTP");
+				alert(a);
+			}
+		});
+
+		return false;
+	});
 
 	// Save Project
 	$("#save_project").click(function(e){
