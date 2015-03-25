@@ -28,7 +28,7 @@ $new_id = $new['pj_id'] + 1;
 <div class="container" style="padding-top:50px;">
 	<div class="row">
 		<div class="col-xs-10">
-			<a href="project.php?id=<?php echo $new_id;?>" class="btn btn-success">Add New</a>
+			<a href="project.php?id=<?php echo $new_id;?>" class="btn btn-success">Add Project</a>
 		</div>
 		<div class="col-xs-2">
 			<a href="javascript:;" id="update_git_ftp" class="btn btn-info btn-block">Update GIT-FTP</a>
