@@ -7,12 +7,12 @@ class gitFtp{
 	var $io_server = "";
 
 	function __construct($dir = "", $conf){
-		$this->dir = "../$dir/";
+		$this->dir = $conf['dir_htdocs']."$dir/";
 		$this->conf = $conf;
 	}
 
 	static function dir($dir, $conf){
-		exec("cd ../$dir/ && git status", $o);
+		exec("cd ".$conf['dir_htdocs']."$dir/ && git status", $o);
 		if(empty($o)) return false;
 		return new gitFtp($dir, $conf);
 	}
@@ -186,7 +186,10 @@ class gitFtp{
 			$parts = explode('/',trim($this->ftp_dir.$file, "/"));
 			$last = count($parts) -1;
 			$filename = $parts[$last];
-			unset($parts[3],$parts[$last]);
+			foreach ($this->conf['rm_dir_part'] as $v) {
+				unset($parts[$v]);
+			}
+			unset($parts[$last]);
 			$dir = "";
 			foreach($parts as $part){
 				$dir .= $part."/";

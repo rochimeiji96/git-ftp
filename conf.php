@@ -20,4 +20,4 @@ $conf['websocket'] = "http://zonareplika.com:2000/pub";
 | set : [4]
 | res : /var/www/html/project
 */
-$conf['rm_dir_part'] = [3];
+$conf['rm_dir_part'] = [];
