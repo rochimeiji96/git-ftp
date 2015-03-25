@@ -162,7 +162,7 @@ $(function(){
 		return false;
 	});
 
-	// Checkout Commit
+	// Upload file with git repository
 	$("#submit_transfer").click(function(e){
 		e.preventDefault();
 		if(typeof nds != "undefined") return false;
