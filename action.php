@@ -20,7 +20,12 @@ if(isset($_GET['update'])){
 // Update GIT-FTP
 if(isset($_POST['action']) && $_POST['action'] == "posix_kill"){
 	$pid = $_POST['pid'];
+	$project = $_POST['project'];
 	kil_pid($pid, 15);
+
+	$EIO = EIO::app('pub');
+	$EIO->flush("ftp_push:".$project);
+	echo "Update GIT-FTP Succesfull";
 	die;
 }
 

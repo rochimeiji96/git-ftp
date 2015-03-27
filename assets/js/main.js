@@ -242,7 +242,12 @@ $(function(){
 		}
 		// Open modal push
 		if(e.altKey && e.which == 82){
-			$.ajax({url:"action.php",type:'post',data:'action=posix_kill&pid='+$("#posix_id").val()})
+			$.ajax({url:"action.php",type:'post',
+				data:'action=posix_kill&pid='+$("#posix_id").val()+"&project="+$("#project").val(),
+				success : function(e){
+					gAlert(e);
+				}
+			})
 		}
 		// Open localhost project
 		if(e.altKey && e.which == 78){
