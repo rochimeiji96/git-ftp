@@ -213,7 +213,11 @@ $(function(){
 	/* Window keyboard event*/
 	$(window).keyup(function(e){
     	e.preventDefault();
-    	// console.log(e);
+    	console.log(e);
+		// To List
+		if(e.altKey && e.which == 76){
+			window.location = "index.php"
+		}
 		// Save Project
 		if(e.altKey && e.which == 83){
 			$(".save_project").trigger("click");
@@ -235,6 +239,10 @@ $(function(){
 			$("#coll_git_push").collapse('toggle');
 			$(".content_file").height(280);
 			$("#commit_subject").focus();
+		}
+		// Open modal push
+		if(e.altKey && e.which == 82){
+			$.ajax({url:"action.php",type:'post',data:'action=posix_kill&pid='+$("#posix_id").val()})
 		}
 		// Open localhost project
 		if(e.altKey && e.which == 78){

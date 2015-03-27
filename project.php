@@ -32,8 +32,9 @@ $row = $db->where(["pj_id" => $id])->limit(1)->get("project")->row_array();
 <body>
 <div class="container" style="padding-top:20px;">
 	<div class="form-group row">
-		<a href="index.php" class="btn btn-default"><i class="glyphicon glyphicon-circle-arrow-left"></i> Back</a>
+		<a href="index.php" class="btn btn-default to_list"><i class="glyphicon glyphicon-circle-arrow-left"></i> Back</a>
 	</div>
+	<input type="hidden" id="posix_id" value="<?php echo getmypid();?>">
 	<input type="hidden" id="project-id" value="<?php echo $id;?>">
 	<div class="form-group row">
 		<label class="col-xs-2">Directory Project</label>
@@ -209,6 +210,7 @@ $(function(){
 		});
 		$("#result_progress").find(".progress-bar").width(data.percentage);
 		$(".result").html(parseInt(data.percentage)+"%");
+		$("#posix_id").html(data.pid);
 		$(".result_content").html(html);
 	}, true);
 

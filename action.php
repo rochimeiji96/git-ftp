@@ -17,6 +17,13 @@ if(isset($_GET['update'])){
 	die;
 }
 
+// Update GIT-FTP
+if(isset($_POST['action']) && $_POST['action'] == "posix_kill"){
+	$pid = $_POST['pid'];
+	kil_pid($pid, 15);
+	die;
+}
+
 // Save Project
 if(isset($_POST['action']) && $_POST['action'] == "save_project"){
 	$id = $_POST['id'];
@@ -122,19 +129,19 @@ if(isset($_POST['action']) && $_POST['action'] == "git_push"){
 		$git_repo = str_replace("//", "//$user:$pass@", $repo);
 	}
 
-	$gp->EIO->send('git_push:'.$project, ['action' => 'Git Add', 'result' => '', 'process' => 0]);
+	$gp->EIO->send('git_push:'.$project, ['action' => 'Git Add', 'result' => '', 'process' => 0, 'pid' => getmypid()]);
 	$o = $gp->exec('git add -A', true);
 
-	$gp->EIO->send('git_push:'.$project, ['action' => 'Git Commit '.$subject.'', 'result' => $o, 'process' => 25]);	
+	$gp->EIO->send('git_push:'.$project, ['action' => 'Git Commit '.$subject.'', 'result' => $o, 'pid' => getmypid()]);	
 	$o = $gp->exec('git commit -m "'.$subject.'"', true);
 
-	$gp->EIO->send('git_push:'.$project, ['action' => 'Git Pull '.$repo, 'result' => $o, 'process' => 50]);
+	$gp->EIO->send('git_push:'.$project, ['action' => 'Git Pull '.$repo, 'result' => $o, 'pid' => getmypid()]);
 	$o = $gp->exec('git pull '.$git_repo, true);
 
-	$gp->EIO->send('git_push:'.$project, ['action' => 'Git Push '.$repo, 'result' => $o, 'process' => 75]);
+	$gp->EIO->send('git_push:'.$project, ['action' => 'Git Push '.$repo, 'result' => $o, 'pid' => getmypid()]);
 	$o = $gp->exec('git push --force '.$git_repo, true);
 	// Result
-	$gp->EIO->send('git_push:'.$project, ['action' => 'Git Push Successfully', 'result' => $o, 'process' => 100]);
+	$gp->EIO->send('git_push:'.$project, ['action' => 'Git Push Successfully', 'result' => $o, 'pid' => getmypid()]);
 	$gp->EIO->flush('git_push:'.$project);
 	die;
 }

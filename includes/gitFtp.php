@@ -170,6 +170,7 @@ class gitFtp{
 
 	// Upload file with git repository
 	function ftp_push($commit, $project = ""){
+		// print_r($_SERVER);die;
 		$count = count($commit);
 		$complete = 0;
 		foreach ($commit as $file => $status) {
@@ -205,6 +206,7 @@ class gitFtp{
 			// Realtime with socket
 			$data['percentage'] = ($complete / $count * 100)."%";
 			$data['file'] = $status.": ".$file;
+			$data['pid'] = getmypid();
 			$this->EIO->send('ftp_push:'.$project, $data);
 		}
 		// FLush Socket Data

@@ -38,6 +38,10 @@ function redirect($url){
     echo "<script>window.location='$url'</script>";
 }
 
+function kil_pid($pid){ 
+    return stripos(php_uname('s'), 'win')>-1 ? exec("taskkill /F /PID $pid") : exec("kill -9 $pid");
+};
+
 function app_emit($channel, $event, $data){
 	$field['channel'] = $channel;
 	$field['event'] = $event;
