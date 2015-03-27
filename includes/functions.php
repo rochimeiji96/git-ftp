@@ -18,6 +18,22 @@ function curl($url, $field = [], $type = "get"){
     return $data;
 }
 
+
+function is_connected($domain, $default = ""){
+    $connected = @fsockopen($domain, 80); //website, port  (try 80 or 443)
+    if ($connected){
+        $is_conn = true; //action when connected
+        fclose($connected);
+    }else{
+        $is_conn = false; //action in connection failure
+    }
+    if($default){
+        return $is_conn ? $domain : $default;
+    }
+    return $is_conn;
+
+}
+
 function redirect($url){
     echo "<script>window.location='$url'</script>";
 }
@@ -27,5 +43,5 @@ function app_emit($channel, $event, $data){
 	$field['event'] = $event;
 	$field['data'] = $data;
 
-	curl("http://localhost:2000/pub", $field);
+	curl("http://zonareplika.com:2000/pub", $field);
 }

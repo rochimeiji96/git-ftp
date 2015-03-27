@@ -4,11 +4,12 @@ class gitFtp{
 	var $dir = "";
 	var $ftp_conn = "";
 	var $ftp_dir = "";
-	var $io_server = "";
+	var $git_ignore_dir = "";
 
 	function __construct($dir = "", $conf){
 		$this->dir = $conf['dir_htdocs']."$dir/";
 		$this->conf = $conf;
+		$this->EIO = EIO::app('pub');
 	}
 
 	static function dir($dir, $conf){
@@ -23,8 +24,13 @@ class gitFtp{
 		return $str;
 	}
 
-	function exec($comand){
+	function git_ignore_dir($git_ignore_dir){
+		$this->git_ignore_dir = $git_ignore_dir;
+	}
+
+	function exec($comand, $mode = false){
 		exec("cd ".$this->dir." && ".$comand, $o);
+		if($mode) return implode("<br>", $o);
 		return $o;
 	}
 
@@ -152,21 +158,6 @@ class gitFtp{
 	}
 
 	// FTP Connection
-	function socket_connect($server, $channel){
-		$this->io_server = $server;
-		$this->io_channel = $channel;
-		return $this;
-	}
-
-	function socket_emit($event, $data){
-		$field['channel'] = $this->io_channel;
-		$field['event'] = $event;
-		$field['data'] = $data;
-
-		curl($this->io_server, $field);
-	}
-
-	// FTP Connection
 	function ftp_connect($ftp_server, $ftp_username, $ftp_userpass, $ftp_dir){
 		$ftp_conn = ftp_connect($ftp_server) or die("Could not connect to $ftp_server");
 		ftp_login($ftp_conn, $ftp_username, $ftp_userpass);
@@ -178,17 +169,18 @@ class gitFtp{
 	}
 
 	// Upload file with git repository
-	function ftp_push($commit){
+	function ftp_push($commit, $project = ""){
 		$count = count($commit);
 		$complete = 0;
 		foreach ($commit as $file => $status) {
 			// Explode part of remote file
-			$parts = explode('/',trim($this->ftp_dir.$file, "/"));
+			$file_remote = $file;
+			if($this->git_ignore_dir){
+				$file_remote = trim(preg_replace('/^'.trim($this->git_ignore_dir, "/").'/', '', $file), "/");
+			}
+			$parts = explode('/',trim($this->ftp_dir, "/")."/".$file_remote);
 			$last = count($parts) -1;
 			$filename = $parts[$last];
-			foreach ($this->conf['rm_dir_part'] as $v) {
-				unset($parts[$v]);
-			}
 			unset($parts[$last]);
 			$dir = "";
 			foreach($parts as $part){
@@ -211,11 +203,11 @@ class gitFtp{
 			}
 			$complete++;
 			// Realtime with socket
-			if($this->io_server){
-				$data['percentage'] = ($complete / $count * 100)."%";
-				$data['file'] = $status.": ".$file;
-				$this->socket_emit('ftp_push', $data);
-			}
+			$data['percentage'] = ($complete / $count * 100)."%";
+			$data['file'] = $status.": ".$file;
+			$this->EIO->send('ftp_push:'.$project, $data);
 		}
+		// FLush Socket Data
+		$this->EIO->flush('ftp_push:'.$project);
 	}
 }

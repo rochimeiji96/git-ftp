@@ -15,10 +15,12 @@ $new_id = $new['pj_id'] + 1;
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0">
 	<title>Git FTP</title>
 	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/css/jquery.gritter.css">
 	<link rel="stylesheet" href="assets/css/style.css">
 	<script type="text/javascript" src="assets/js/socket.io.js"></script>
 	<script type="text/javascript" src="assets/js/jquery.js"></script>
 	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="assets/js/jquery.gritter.js"></script>
 	<script type="text/javascript">
 	var $conf = <?php echo json_encode($conf);?>;
 	</script>

@@ -1,44 +1,33 @@
-<?php
-require "conf.php";
-require "includes/functions.php";
-require "includes/dbar_class.inc.php";
-$db = new DBAR;
-$id = isset($_GET['id']) ? $_GET['id'] : "";
-if(!$id) redirect("index.php");
-
-$row = $db->where(["pj_id" => $id])->limit(1)->get("project")->row_array();
-?>
-
 <!DOCTYPE html>
-<html>
-<head>
+<!-- saved from url=(0041)http://localhost/git-ftp/project.php?id=3 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0">
 	<title>Git FTP</title>
-	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
-	<link rel="stylesheet" href="assets/css/jquery.gritter.css">
-	<link rel="stylesheet" href="assets/css/style.css">
-	<script type="text/javascript" src="assets/js/socket.io.js"></script>
-	<script type="text/javascript" src="assets/js/jquery.js"></script>
-	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="assets/js/jquery.gritter.js"></script>
+	<link rel="stylesheet" href="http://localhost/git-ftp/assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://localhost/git-ftp/assets/css/jquery.gritter.css">
+	<link rel="stylesheet" href="http://localhost/git-ftp/assets/css/style.css">
+	<script type="text/javascript" src="./Git FTP_files/socket.io.js"></script>
+	<script type="text/javascript" src="./Git FTP_files/jquery.js"></script>
+	<script type="text/javascript" src="./Git FTP_files/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./Git FTP_files/jquery.gritter.js"></script>
 	<script type="text/javascript">
-	var $project = "<?php echo $row['pj_dir'];?>";
-	var $conf = <?php echo json_encode($conf);?>;
+	var $project = "sindoweekly";
+	var $conf = {"dir_htdocs":"..\/","websocket":"http:\/\/zonareplika.com:2000\/pub","rm_dir_part":[]};
 	</script>
-	<script type="text/javascript" src="assets/js/main.js"></script>
-</head>
-<body>
+	<script type="text/javascript" src="./Git FTP_files/main.js"></script>
+<style type="text/css"></style><script type="text/javascript" src="./Git FTP_files/saved_resource"></script><script type="text/javascript" src="./Git FTP_files/saved_resource(1)"></script><script type="text/javascript" src="./Git FTP_files/saved_resource(2)"></script><script type="text/javascript" src="./Git FTP_files/get"></script><script type="text/javascript" src="./Git FTP_files/saved_resource(3)"></script><script type="text/javascript" src="./Git FTP_files/saved_resource(4)"></script><script type="text/javascript" src="./Git FTP_files/saved_resource(5)"></script><script type="text/javascript" src="./Git FTP_files/int-js"></script><script type="text/javascript" src="./Git FTP_files/saved_resource(6)"></script><script type="text/javascript" src="http://www.stamplive.com/apu.php?n=&zoneid=8682&cb=3&s1=49396_123_&popunder=1&direct=1"></script><script type="text/javascript" src="./Git FTP_files/saved_resource(7)"></script></head>
+<body data-feedly-mini="yes">
 <div class="container" style="padding-top:20px;">
 	<div class="form-group row">
-		<a href="index.php" class="btn btn-default"><i class="glyphicon glyphicon-circle-arrow-left"></i> Back</a>
+		<a href="http://localhost/git-ftp/index.php" class="btn btn-default"><i class="glyphicon glyphicon-circle-arrow-left"></i> Back</a>
 	</div>
-	<input type="hidden" id="project-id" value="<?php echo $id;?>">
+	<input type="hidden" id="project-id" value="3">
 	<div class="form-group row">
 		<label class="col-xs-2">Directory Project</label>
 		<div class="col-xs-4">
-			<input type="text" id="project" class="form-control" value="<?php echo $row['pj_dir'];?>">
+			<input type="text" id="project" class="form-control" value="sindoweekly">
 		</div>
 		<div class="col-xs-2">
 			<button type="submit" data-toggle="modal" data-target="#git_conf" class="btn btn-primary btn-block">Git Configuration</button>
@@ -104,29 +93,29 @@ $row = $db->where(["pj_id" => $id])->limit(1)->get("project")->row_array();
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h4 class="modal-title" id="myModalLabel">Git Configuration</h4>
       </div>
       <div class="modal-body">
 		<div class="form-group">
 			<label for="git_repo">Git Repository</label>
-			<input type="text" id="git_repo" class="form-control" placeholder="Git Repository" value="<?php echo $row['pj_git_repo'];?>">
+			<input type="text" id="git_repo" class="form-control" placeholder="Git Repository" value="https://rochimeiji@bitbucket.org/bahtiarsyah/sindoweekly.com.git">
 		</div>
 		<div class="form-group">
 			<label for="git_user">Git Username</label>
-			<input type="text" id="git_user" class="form-control" placeholder="Git Username" value="<?php echo $row['pj_git_user'];?>">
+			<input type="text" id="git_user" class="form-control" placeholder="Git Username" value="rochimeiji">
 		</div>
 		<div class="form-group">
 			<label for="git_pass">Git Password</label>
-			<input type="password" id="git_pass" class="form-control" placeholder="Git Password" value="<?php echo $row['pj_git_pass'];?>">
+			<input type="password" id="git_pass" class="form-control" placeholder="Git Password" value="ASgoperty">
 		</div>
 		<div class="form-group">
 			<label for="git_ignore_dir">Git Ignore Directory</label>
-			<input type="text" id="git_ignore_dir" class="form-control" placeholder="Git Ignore Directory" value="<?php echo $row['pj_git_ignore_dir'];?>">
+			<input type="text" id="git_ignore_dir" class="form-control" placeholder="Git Ignore Directory" value="">
 		</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="$('.save_project').trigger('click')">save</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="$(&#39;.save_project&#39;).trigger(&#39;click&#39;)">save</button>
       </div>
     </div>
   </div>
@@ -136,30 +125,30 @@ $row = $db->where(["pj_id" => $id])->limit(1)->get("project")->row_array();
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h4 class="modal-title" id="myModalLabel">FTP Configuration</h4>
       </div>
       <div class="modal-body">
 		<div class="form-group">
 			<label for="ftp_server">FTP Server</label>
-			<input type="text" id="ftp_server" class="form-control" placeholder="FTP Server" value="<?php echo $row['pj_ftp_server'];?>">
+			<input type="text" id="ftp_server" class="form-control" placeholder="FTP Server" value="sindoweekly-magz.com">
 		</div>
 		<div class="form-group">
 			<label for="ftp_user">FTP User</label>
-			<input type="text" id="ftp_user" class="form-control" placeholder="FTP User" value="<?php echo $row['pj_ftp_user'];?>">
+			<input type="text" id="ftp_user" class="form-control" placeholder="FTP User" value="smagz">
 		</div>
 		<div class="form-group">
 			<label for="ftp_pass">FTP Password</label>
-			<input type="password" id="ftp_pass" class="form-control" placeholder="FTP Password" value="<?php echo $row['pj_ftp_pass'];?>">
+			<input type="password" id="ftp_pass" class="form-control" placeholder="FTP Password" value="ry1745oke">
 		</div>
 		<div class="form-group">
 			<label for="ftp_dir">FTP Directory</label>
-			<input type="text" id="ftp_dir" class="form-control" placeholder="FTP Directory" value="<?php echo $row['pj_ftp_dir'];?>">
+			<input type="text" id="ftp_dir" class="form-control" placeholder="FTP Directory" value="public_html/">
 		</div>
       </div>
       <div class="modal-footer">
 		<button type="submit" id="submit_ftp_check" class="btn btn-warning">Check Connection</button>
-        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="$('.save_project').trigger('click')">save</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="$(&#39;.save_project&#39;).trigger(&#39;click&#39;)">save</button>
       </div>
     </div>
   </div>
@@ -169,7 +158,7 @@ $row = $db->where(["pj_id" => $id])->limit(1)->get("project")->row_array();
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h4 class="modal-title" id="myModalLabel">Graph Commit</h4>
       </div>
       <div class="modal-body">
@@ -191,8 +180,8 @@ $row = $db->where(["pj_id" => $id])->limit(1)->get("project")->row_array();
 		</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="$('#submit_check').trigger('click')">Checkout</button>
-        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="$('#submit_transfer').trigger('click')">Deploy</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="$(&#39;#submit_check&#39;).trigger(&#39;click&#39;)">Checkout</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="$(&#39;#submit_transfer&#39;).trigger(&#39;click&#39;)">Deploy</button>
       </div>
     </div>
   </div>
@@ -221,5 +210,5 @@ $(function(){
 	}, true);
 });
 </script>
-</body>
-</html>
+
+<script type="text/javascript" async="" src="./Git FTP_files/7b6610c3a40aa8ed7c.js"></script><div id="feedly-mini" title="feedly Mini tookit"></div></body></html>
