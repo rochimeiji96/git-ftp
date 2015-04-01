@@ -212,7 +212,14 @@ $(function(){
 		$(".result").html(parseInt(data.percentage)+"%");
 		$("#posix_id").html(data.pid);
 		$(".result_content").html(html);
-	}, true);
+		if(parseInt(data.percentage) == 100){
+			gAlert("Deploying succesfull!");
+			setTimeout(function(){
+				$("#result_progress").collapse("hide");
+				$("#result_progress").find(".progress-bar").width("0%");
+			},1000);
+		}
+	});
 
 	app.on('git_push:'+$project, function(data){
 		console.log(data);
@@ -220,7 +227,13 @@ $(function(){
 		$("#result_progress").find(".progress-bar").width(data.process+"%");
 		$(".progress_title").html(data.action);
 		$(".result_console").html(data.result);
-		if(data.process == 100) gAlert(data.action);
+		if(data.process == 100){
+			gAlert(data.action);
+			setTimeout(function(){
+				$("#result_progress").collapse("hide");
+				$("#result_progress").find(".progress-bar").width("0%");
+			},1000);
+		}
 	}, true);
 });
 </script>
