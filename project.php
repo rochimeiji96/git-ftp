@@ -215,6 +215,7 @@ $(function(){
 	}, true);
 
 	app.on('git_push:'+$project, function(data){
+		console.log(data);
 		$("#result_progress").collapse("show");
 		$("#result_progress").find(".progress-bar").width(data.process+"%");
 		$(".progress_title").html(data.action);

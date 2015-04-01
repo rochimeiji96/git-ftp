@@ -213,7 +213,7 @@ $(function(){
 	/* Window keyboard event*/
 	$(window).keyup(function(e){
     	e.preventDefault();
-    	console.log(e);
+    	// console.log(e);
 		// To List
 		if(e.altKey && e.which == 76){
 			window.location = "index.php"
