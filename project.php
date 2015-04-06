@@ -213,6 +213,7 @@ $(function(){
 		$("#posix_id").html(data.pid);
 		$(".result_content").html(html);
 		if(parseInt(data.percentage) == 100){
+			file_upload = [];
 			gAlert("Deploying succesfull!");
 			setTimeout(function(){
 				$("#result_progress").collapse("hide");

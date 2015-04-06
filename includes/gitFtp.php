@@ -78,14 +78,14 @@ class gitFtp{
 	function file_unstage($origin = 'status'){
 		$file = [];
 
-		$o = $this->exec("git diff --name-status");
+		$o = $this->exec("git status --porcelain -u");
 		if($origin == 'status'){
 			$file = ['add' => '', 'merge' => '', 'delete' => ''];
 			foreach ($o as $k => $v) {
 				$x = explode(" ",static::nms($v));
-				if(trim($x[0]) == "A") $status = "add";
-				if(trim($x[0]) == "M") $status = "merge";
-				if(trim($x[0]) == "D") $status = "delete";
+				if(in_array(trim($x[0]), ["A","??"])) $status = "add";
+				if(in_array(trim($x[0]), ["M"])) $status = "merge";
+				if(in_array(trim($x[0]), ["D","AD"])) $status = "delete";
 				$file[$status][$k] = trim($x[1]);
 			}
 			return $file;
@@ -93,9 +93,9 @@ class gitFtp{
 		if($origin == 'key'){
 			foreach ($o as $k => $v) {
 				$x = explode(" ",static::nms($v));
-				if(trim($x[0]) == "A") $status = "add";
-				if(trim($x[0]) == "M") $status = "merge";
-				if(trim($x[0]) == "D") $status = "delete";
+				if(in_array(trim($x[0]), ["A","??"])) $status = "add";
+				if(in_array(trim($x[0]), ["M"])) $status = "merge";
+				if(in_array(trim($x[0]), ["D","AD"])) $status = "delete";
 				$file[$x[1]] = $status;
 			}
 			return $file;
@@ -107,7 +107,8 @@ class gitFtp{
 	function file_commit($code, $origin = 'status'){
 		$file = [];
 
-		$o = $this->exec("git diff --name-status $code");
+		$o = $this->exec('git show --pretty="format:" --name-status '.$code);
+		unset($o[0]);
 		if($origin == 'status'){
 			$file = ['add' => '', 'merge' => '', 'delete' => ''];
 			foreach ($o as $k => $v) {
@@ -144,7 +145,7 @@ class gitFtp{
 			foreach($list_commit as $commit) {
 				if($commit == $code){
 					$start = true;
-					$file = $this->file_commit($commit, 'key');
+					$file = array_merge($file,$this->file_commit($commit, 'key'));
 				}elseif($commit == $tocode){
 					$file = array_merge($file,$this->file_commit($commit, 'key'));
 					$start = false;
