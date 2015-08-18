@@ -1,6 +1,6 @@
 $(function(){
 	// Socket IO
-	app = LIO.app($conf['websocket']);
+	app = EIO.app($conf['websocket']);
 
 	// Update GIT FTP
 	$("#update_git_ftp").click(function(e){

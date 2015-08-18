@@ -12,7 +12,7 @@ $conf['dir_htdocs'] = "../";
 | Realtime upload information
 | Set websocket url or false to unused
 */
-$conf['websocket'] = "http://zonareplika.com:2000/pub";
+$conf['websocket'] = "http://nodejs-rochimeiji.rhcloud.com/pub";
 
 /*
 | Remove directory number of part

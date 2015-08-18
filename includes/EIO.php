@@ -1,7 +1,7 @@
 <?php
 
 class EIO{
-	var $websocket = "http://zonareplika.com:2000/";
+	var $websocket = "http://nodejs-rochimeiji.rhcloud.com/";
 	var $app_user = "pub";
 	var $app_secret = "12345";
 	var $channel = "public";

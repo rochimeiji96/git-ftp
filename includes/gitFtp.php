@@ -75,33 +75,33 @@ class gitFtp{
 		return array_reverse($list);
 	}
 
-	function file_unstage($origin = 'status'){
+	function file_unstage($origin = 'key'){
 		$file = [];
 
+		// Different unstaged
+		$u = $this->exec("git diff --name-only");
+
+		// Different staged
+		$u2 = $this->exec("git diff --cached --name-only");
+
 		$o = $this->exec("git status --porcelain -u");
-		if($origin == 'status'){
-			$file = ['add' => '', 'merge' => '', 'delete' => ''];
-			foreach ($o as $k => $v) {
-				$x = explode(" ",static::nms($v));
-				if(in_array(trim($x[0]), ["A","??"])) $status = "add";
-				if(in_array(trim($x[0]), ["M"])) $status = "merge";
-				if(in_array(trim($x[0]), ["D","AD"])) $status = "delete";
-				$file[$status][$k] = trim($x[1]);
+
+		if($origin == 'status') $file = ['add' => '', 'merge' => '', 'delete' => ''];
+		foreach ($o as $k => $v) {
+			$x = explode(" ",static::nms($v));
+			if(in_array(trim($x[0]), ["A","??"])) $status = "add";
+			if(in_array(trim($x[0]), ["M"])) $status = "merge";
+			if(in_array(trim($x[0]), ["D","AD"])) $status = "delete";
+
+			if(($status == "add" && !in_array($x[1], $u2)) || in_array($x[1], $u)){
+				if($origin == 'status'){
+					$file[$status][$k] = trim($x[1]);
+				}else{
+					$file[$x[1]] = $status;
+				}
 			}
-			return $file;
 		}
-		if($origin == 'key'){
-			foreach ($o as $k => $v) {
-				$x = explode(" ",static::nms($v));
-				if(in_array(trim($x[0]), ["A","??"])) $status = "add";
-				if(in_array(trim($x[0]), ["M"])) $status = "merge";
-				if(in_array(trim($x[0]), ["D","AD"])) $status = "delete";
-				$file[$x[1]] = $status;
-			}
-			return $file;
-		}
-		print_r($file);die;
-		return $o;
+		return $file;
 	}
 
 	function file_commit($code, $origin = 'status'){
@@ -125,8 +125,9 @@ class gitFtp{
 				$x = explode(" ",static::nms($v));
 				if(trim($x[0]) == "A") $status = "add";
 				if(trim($x[0]) == "M") $status = "merge";
+				if(trim($x[0]) == "MM") $status = "merge";
 				if(trim($x[0]) == "D") $status = "delete";
-				$file[$x[1]] = $status;
+				if(isset($status)) $file[$x[1]] = $status;
 			}
 			return $file;
 		}
