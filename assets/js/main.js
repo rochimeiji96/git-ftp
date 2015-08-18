@@ -123,6 +123,7 @@ $(function(){
 		$project = $("#project").val();
 		$commit_from = $("#commit_from").val();
 		$commit_to = $("#commit_to").val();
+		$git_ignore_dir = $("#git_ignore_dir").val();
 		$btn = $(this);
 		$btn_name = $btn.html();
 		$(this).html('<div class="spinner light"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>');
@@ -130,7 +131,7 @@ $(function(){
 		$.ajax({
 			url : 'action.php',
 			type : 'post',
-			data : 'action=checkout&project='+$project+"&commit_from="+$commit_from+"&commit_to="+$commit_to,
+			data : 'action=checkout&project='+$project+"&commit_from="+$commit_from+"&commit_to="+$commit_to+"&git_ignore_dir="+$git_ignore_dir,
 			success : function(resp){
 				delete nds;
 				$btn.html($btn_name);

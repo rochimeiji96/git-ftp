@@ -101,6 +101,15 @@ class gitFtp{
 				}
 			}
 		}
+
+		if($this->git_ignore_dir){
+			foreach ($file as $filedir => $status) {
+				if(!strpos('/'.$filedir, trim($this->git_ignore_dir,'/').'/')){
+					unset($file[$filedir]);
+				}
+			}
+		}
+
 		return $file;
 	}
 
@@ -115,8 +124,9 @@ class gitFtp{
 				$x = explode(" ",static::nms($v));
 				if(trim($x[0]) == "A") $status = "add";
 				if(trim($x[0]) == "M") $status = "merge";
+				if(trim($x[0]) == "MM") $status = "merge";
 				if(trim($x[0]) == "D") $status = "delete";
-				$file[$status][$k] = trim($x[1]);
+				if(isset($status)) $file[$status][$k] = trim($x[1]);
 			}
 			return $file;
 		}
@@ -152,6 +162,14 @@ class gitFtp{
 					$start = false;
 				}elseif($start){
 					$file = array_merge($file,$this->file_commit($commit, 'key'));
+				}
+			}
+		}
+		
+		if($this->git_ignore_dir){
+			foreach ($file as $filedir => $status) {
+				if(!strpos('/'.$filedir, trim($this->git_ignore_dir,'/').'/')){
+					unset($file[$filedir]);
 				}
 			}
 		}

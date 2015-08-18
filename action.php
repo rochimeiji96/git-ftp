@@ -93,6 +93,8 @@ if(isset($_POST['action']) && $_POST['action'] == "list_commit"){
 // Checkout Files
 if(isset($_POST['action']) && $_POST['action'] == "checkout"){
 	$gp = gitFtp::dir($_POST['project'], $conf);
+	// echo $_POST['git_ignore_dir'];die;
+	$gp->git_ignore_dir($_POST['git_ignore_dir']);
 	$o = $gp->file_committo($_POST['commit_from'], $_POST['commit_to']);
 	if(empty($o)){
 		$o = $gp->file_unstage('key');
