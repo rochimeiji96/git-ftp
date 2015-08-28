@@ -90,8 +90,10 @@ class gitFtp{
 		foreach ($o as $k => $v) {
 			$x = explode(" ",static::nms($v));
 			if(in_array(trim($x[0]), ["A","??"])) $status = "add";
-			if(in_array(trim($x[0]), ["M"])) $status = "merge";
+			if(in_array(trim($x[0]), ["M","MM"])) $status = "merge";
 			if(in_array(trim($x[0]), ["D","AD"])) $status = "delete";
+
+			echo $x[0];
 
 			if(($status == "add" && !in_array($x[1], $u2)) || in_array($x[1], $u)){
 				if($origin == 'status'){
@@ -122,10 +124,9 @@ class gitFtp{
 			$file = ['add' => '', 'merge' => '', 'delete' => ''];
 			foreach ($o as $k => $v) {
 				$x = explode(" ",static::nms($v));
-				if(trim($x[0]) == "A") $status = "add";
-				if(trim($x[0]) == "M") $status = "merge";
-				if(trim($x[0]) == "MM") $status = "merge";
-				if(trim($x[0]) == "D") $status = "delete";
+				if(in_array(trim($x[0]), ["A","??"])) $status = "add";
+				if(in_array(trim($x[0]), ["M","MM"])) $status = "merge";
+				if(in_array(trim($x[0]), ["D","AD"])) $status = "delete";
 				if(isset($status)) $file[$status][$k] = trim($x[1]);
 			}
 			return $file;
@@ -133,10 +134,9 @@ class gitFtp{
 		if($origin == 'key'){
 			foreach ($o as $k => $v) {
 				$x = explode(" ",static::nms($v));
-				if(trim($x[0]) == "A") $status = "add";
-				if(trim($x[0]) == "M") $status = "merge";
-				if(trim($x[0]) == "MM") $status = "merge";
-				if(trim($x[0]) == "D") $status = "delete";
+				if(in_array(trim($x[0]), ["A","??"])) $status = "add";
+				if(in_array(trim($x[0]), ["M","MM"])) $status = "merge";
+				if(in_array(trim($x[0]), ["D","AD"])) $status = "delete";
 				if(isset($status)) $file[$x[1]] = $status;
 			}
 			return $file;
