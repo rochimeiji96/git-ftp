@@ -112,13 +112,13 @@ if(isset($_POST['action']) && $_POST['action'] == "ftp_push"){
 	if(empty($o)){
 		$o = $gp->file_unstage('key');
 		$gp->exec("git add -A");
+	}else{
+		$id = $_POST['id'];
+		$last_comm_desc = $_POST['commit_to'].": ".$gp->detail_commit("desc", $_POST['commit_to']);
+
+		$db->update_data("project", ['pj_last_push' => $last_comm_desc], ['pj_id' => $id]);
 	}
 	$gp->ftp_push($o, $_POST['project']);
-
-	$id = $_POST['id'];
-	$last_comm_desc = $_POST['commit_to'].": ".$gp->detail_commit("desc", $_POST['commit_to']);
-
-	$db->update_data("project", ['pj_last_push' => $last_comm_desc], ['pj_id' => $id]);
 	die;
 }
 
