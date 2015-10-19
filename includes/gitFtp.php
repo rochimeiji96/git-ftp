@@ -93,8 +93,6 @@ class gitFtp{
 			if(in_array(trim($x[0]), ["M","MM"])) $status = "merge";
 			if(in_array(trim($x[0]), ["D","AD"])) $status = "delete";
 
-			echo $x[0];
-
 			if(($status == "add" && !in_array($x[1], $u2)) || in_array($x[1], $u)){
 				if($origin == 'status'){
 					$file[$status][$k] = trim($x[1]);
@@ -197,6 +195,7 @@ class gitFtp{
 			// Explode part of remote file
 			$file_remote = $file;
 			if($this->git_ignore_dir){
+				if(!strpos('.'.$file, $this->git_ignore_dir)) continue;
 				$file_remote = trim(preg_replace('/^'.trim($this->git_ignore_dir, "/").'/', '', $file), "/");
 			}
 			$parts = explode('/',trim($this->ftp_dir, "/")."/".$file_remote);
